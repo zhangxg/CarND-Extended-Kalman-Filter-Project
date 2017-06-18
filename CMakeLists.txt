@@ -8,9 +8,9 @@ set(CXX_FLAGS "-Wall")
 set(CMAKE_CXX_FLAGS, "${CXX_FLAGS}")
 
 set(sources
-#        src/main.cpp
-        src/FileLoader.cpp
-        src/test_boot.cpp
+        src/main.cpp
+#        src/FileLoader.cpp
+#        src/test_boot.cpp
         src/tools.cpp
         src/FusionEKF.cpp
         src/kalman_filter.cpp
