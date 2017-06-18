@@ -22,7 +22,9 @@ int main() {
     FusionEKF fusionEKF;
 
     for (size_t k = 0; k < N; ++k) {	//start filtering from the second frame (the speed is unknown in the first frame)
-        fusionEKF.ProcessMeasurement(measurement_pack_list[k]);
+        cout << k << "====" << endl;
+//        cout << measurement_pack_list[k].ground_truth_ << endl;
+//        fusionEKF.ProcessMeasurement(measurement_pack_list[k]);
     }
     return 0;
 }

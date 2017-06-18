@@ -24,6 +24,20 @@ FileLoader::~FileLoader() {
 
 }
 
+void readGroundTruth(istringstream& iss, MeasurementPackage& meas_package){
+    // read ground truth value
+    float x_gt;
+    float y_gt;
+    float vx_gt;
+    float vy_gt;
+    iss >> x_gt;
+    iss >> y_gt;
+    iss >> vx_gt;
+    iss >> vy_gt;
+    meas_package.ground_truth_ = VectorXd(4);
+    meas_package.ground_truth_ << x_gt, y_gt, vx_gt, vy_gt;
+}
+
 vector<MeasurementPackage> FileLoader::loadData() {
     vector<MeasurementPackage> measurement_pack_list;
 
@@ -55,6 +69,9 @@ vector<MeasurementPackage> FileLoader::loadData() {
             meas_package.raw_measurements_ << x,y;
             iss >> timestamp;
             meas_package.timestamp_ = timestamp;
+
+            readGroundTruth(iss, meas_package);
+
             measurement_pack_list.push_back(meas_package);
 
         }else if(sensor_type.compare("R") == 0){
@@ -69,8 +86,21 @@ vector<MeasurementPackage> FileLoader::loadData() {
             meas_package.raw_measurements_ << ro,theta, ro_dot;
             iss >> timestamp;
             meas_package.timestamp_ = timestamp;
+            readGroundTruth(iss, meas_package);
             measurement_pack_list.push_back(meas_package);
         }
+//
+//        // read ground truth value
+//        float x_gt;
+//        float y_gt;
+//        float vx_gt;
+//        float vy_gt;
+//        iss >> x_gt;
+//        iss >> y_gt;
+//        iss >> vx_gt;
+//        iss >> vy_gt;
+//        meas_package.ground_truth_ << x_gt, y_gt, vx_gt, vy_gt;
+//        measurement_pack_list.push_back(meas_package);
     }
 
     if(in_file.is_open()){
