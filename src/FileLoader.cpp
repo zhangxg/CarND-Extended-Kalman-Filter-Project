@@ -89,7 +89,8 @@ vector<MeasurementPackage> FileLoader::loadData() {
             readGroundTruth(iss, meas_package);
             measurement_pack_list.push_back(meas_package);
         }
-//
+
+        // WORKS.
 //        // read ground truth value
 //        float x_gt;
 //        float y_gt;

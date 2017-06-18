@@ -20,11 +20,35 @@ int main() {
     cout << N << endl;
 
     FusionEKF fusionEKF;
+    Tools tools;
+
+    vector<VectorXd> estimations;
+    vector<VectorXd> ground_truth;
 
     for (size_t k = 0; k < N; ++k) {	//start filtering from the second frame (the speed is unknown in the first frame)
         cout << k << "====" << endl;
 //        cout << measurement_pack_list[k].ground_truth_ << endl;
-//        fusionEKF.ProcessMeasurement(measurement_pack_list[k]);
+        fusionEKF.ProcessMeasurement(measurement_pack_list[k]);
+
+        VectorXd estimate(4);
+
+        double p_x = fusionEKF.ekf_.x_(0);
+        double p_y = fusionEKF.ekf_.x_(1);
+        double v1  = fusionEKF.ekf_.x_(2);
+        double v2 = fusionEKF.ekf_.x_(3);
+
+        estimate(0) = p_x;
+        estimate(1) = p_y;
+        estimate(2) = v1;
+        estimate(3) = v2;
+        estimations.push_back(estimate);
+
+        ground_truth.push_back(measurement_pack_list[k].ground_truth_);
+
+        VectorXd rmse(4);
+        rmse = tools.CalculateRMSE(estimations, ground_truth);
+        cout << "rmse=\n" << rmse << endl;
+
     }
     return 0;
 }
