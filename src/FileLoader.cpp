@@ -80,18 +80,18 @@ vector<MeasurementPackage> FileLoader::loadData() {
     return measurement_pack_list;
 }
 
-int main() {
-
-    vector<MeasurementPackage> measurement_pack_list;
-//    FileLoader fileLoader("../data/obj_pose-laser-radar-synthetic-input.txt");
-    FileLoader fileLoader = FileLoader("../data/obj_pose-laser-radar-synthetic-input.txt");
-    measurement_pack_list = fileLoader.loadData();
-
-    size_t N = measurement_pack_list.size();
-    cout << N << endl;
-    for (size_t k = 0; k < N; ++k) {	//start filtering from the second frame (the speed is unknown in the first frame)
-//        tracking.ProcessMeasurement(measurement_pack_list[k]);
-//        cout << measurement_pack_list[k].timestamp_ << endl;
-    }
-    return 0;
-}
+//int main() {
+//
+//    vector<MeasurementPackage> measurement_pack_list;
+////    FileLoader fileLoader("../data/obj_pose-laser-radar-synthetic-input.txt");
+//    FileLoader fileLoader = FileLoader("../data/obj_pose-laser-radar-synthetic-input.txt");
+//    measurement_pack_list = fileLoader.loadData();
+//
+//    size_t N = measurement_pack_list.size();
+//    cout << N << endl;
+//    for (size_t k = 0; k < N; ++k) {	//start filtering from the second frame (the speed is unknown in the first frame)
+////        tracking.ProcessMeasurement(measurement_pack_list[k]);
+////        cout << measurement_pack_list[k].timestamp_ << endl;
+//    }
+//    return 0;
+//}

@@ -9,7 +9,7 @@ set(CMAKE_CXX_FLAGS, "${CXX_FLAGS}")
 
 set(sources
 #        src/main.cpp
-#        src/FileLoader.cpp
+        src/FileLoader.cpp
         src/test_boot.cpp
         src/tools.cpp
         src/FusionEKF.cpp
