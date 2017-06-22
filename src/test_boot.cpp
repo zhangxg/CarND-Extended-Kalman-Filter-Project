@@ -13,7 +13,10 @@ using namespace std;
 
 int main() {
     vector<MeasurementPackage> measurement_pack_list;
+
     FileLoader fileLoader = FileLoader("../data/obj_pose-laser-radar-synthetic-input.txt");
+//    FileLoader fileLoader = FileLoader("../data/sample-laser-radar-measurement-data-1.txt");
+//    FileLoader fileLoader = FileLoader("../data/sample-laser-radar-measurement-data-2.txt");
     measurement_pack_list = fileLoader.loadData();
 
     size_t N = measurement_pack_list.size();
