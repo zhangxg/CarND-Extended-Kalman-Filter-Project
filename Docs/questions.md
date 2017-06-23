@@ -5,7 +5,7 @@
 
 Below is a simulator running result comparison:
 
-![simulator_result_compare](./img/EKF compare.png)
+![simulator_result_compare](./img/EKF_compare.png)
 
 The "Left" side picture shows the result of calculating y by
 
