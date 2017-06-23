@@ -15,7 +15,6 @@ VectorXd Tools::CalculateRMSE(const vector<VectorXd> &estimations,
     * Calculate the RMSE here.
   */
     VectorXd rmse(4);
-//    rmse << (-1, -1, -1, -1);  // incorrect, no bracket
     rmse << 0, 0, 0, 0;
 
     //check the inputs validation
@@ -24,9 +23,6 @@ VectorXd Tools::CalculateRMSE(const vector<VectorXd> &estimations,
         return rmse;
     }
 
-    // calculate sum
-//    VectorXd residual(4);
-//    residual << (0, 0, 0, 0);
     for (int i=0; i < estimations.size(); ++i) {
         VectorXd residual = estimations[i] - ground_truth[i];
         residual = residual.array() * residual.array();
@@ -48,12 +44,6 @@ MatrixXd Tools::CalculateJacobian(const VectorXd& x_state) {
     float py = x_state(1);
     float vx = x_state(2);
     float vy = x_state(3);
-
-    // this definition is not good for the zero value check.
-//    float p1 = pow((px**2 + py**2), 0.5); // error, pointer type required
-//    float p1 = pow((px*px + py*py), 0.5);
-//    float p2 = p1 * p1;
-//    float p3 = p2 * p1;
 
     float p2 = px*px + py*py;
     //check division by zero
