@@ -59,11 +59,15 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
     * update the state by using Extended Kalman Filter equations
     */
     double rho = sqrt(x_(0)*x_(0) + x_(1)*x_(1));
+    //https://discussions.udacity.com/t/ekf-gets-off-track/276122/25
+    //https://discussions.udacity.com/t/radar-updates-are-messing-up/281342/11
     float theta = atan2(x_(1), x_(0));  
     double rho_dot = (x_(0)*x_(2) + x_(1)*x_(3)) / rho;
     VectorXd h = VectorXd(3); 
     h << rho, theta, rho_dot;
     VectorXd y = z - h;
+    //https://discussions.udacity.com/t/ekf-gets-off-track/276122/25
+    //https://discussions.udacity.com/t/radar-updates-are-messing-up/281342/11
     y[1] = atan2(sin(y[1]), cos(y[1]));  
     MatrixXd Ht = H_.transpose();      // 4x3
     MatrixXd S = H_ * P_ * Ht + R_;    //(3x4)*(4x4)*(4x3)+(3x3)=(3x3)
