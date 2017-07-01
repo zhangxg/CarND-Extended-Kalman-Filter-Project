@@ -55,9 +55,35 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
 
 ```
 
+## 2. why needs to atan2?
+```
+void KalmanFilter::UpdateEKF(const VectorXd &z) {
+    double rho = sqrt(x_(0)*x_(0) + x_(1)*x_(1));
+    // double theta = atan(x_(1) / x_(0));
+    double theta = atan2(x_(1), x_(0));
+    double rho_dot = (x_(0)*x_(2) + x_(1)*x_(3)) / rho;
+    VectorXd h = VectorXd(3); // h(x_)
+    h << rho, theta, rho_dot;
+    VectorXd y = z - h;
+    y[1] = atan2(sin(y[1]), cos(y[1]));  
+    MatrixXd Ht = H_.transpose();      // 4x3
+    MatrixXd S = H_ * P_ * Ht + R_;    //(3x4)*(4x4)*(4x3)+(3x3)=(3x3)
+    MatrixXd K = P_ * Ht * S.inverse();//(4x4)*(4x3)*(3x3)=(4x3)
+    x_ += K * y;                       //(4x3)*(3x1) = (4x1)
+    P_ = (MatrixXd::Identity(4, 4) - K * H_) * P_; //((4x4) - (4x3)*(3x4)) = (4x4)
+}
+```
 
+the above code process the data correctly, both the car track and rmse meet the rubric requirements, as below image show:
 
+![the correct image](./img/correct_result.png)
 
+to achieve the result, two modifications required:
 
+first, perform normalization, `y[1] = atan2(sin(y[1]), cos(y[1]));  `
+
+second, the `theta` calculation using `double theta = atan2(x_(1), x_(0));` instead of `double theta = atan(x_(1) / x_(0));`, why?
+while not doing so, get the result of below:
+![calculate delta result1](./img/cal_delta_1.png)
 
 
