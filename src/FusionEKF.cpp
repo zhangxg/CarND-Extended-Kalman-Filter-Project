@@ -30,7 +30,6 @@ FusionEKF::FusionEKF() {
                 0, 0, 0.09;
 
     /**
-    TODO: - done
     * Finish initializing the FusionEKF.
     * Set the process and measurement noises
     */
@@ -71,14 +70,10 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
             /**
             Convert radar from polar to cartesian coordinates and initialize state.
             */
-
             float ro = measurement_pack.raw_measurements_[0];
             float theta = measurement_pack.raw_measurements_[1];
-            //      float ro_dot = measurement_pack.raw_measurements_[2];
             /*
-            * fixme, should convert the polor values to cartesian values, includ p and x
-            * but, don't know how to calculate the vx and vy fro, ro_dot, at this moment,
-            * just get the px and py, and leave the vx, vy both zero.
+            * should convert the polor values to cartesian values, includ p and x, but don't know how to calculate the vx and vy fro, ro_dot, just get the px and py, and leave the vx, vy both zero.
             * */
             ekf_.x_ << ro * cos(theta), ro * sin(theta), 0, 0;
         } else if (measurement_pack.sensor_type_ == MeasurementPackage::LASER) {
@@ -107,7 +102,7 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
     */
 
     //compute the time elapsed between the current and previous measurements
-    float dt = (measurement_pack.timestamp_ - previous_timestamp_) / 1000000.0;	//dt - expressed in seconds
+    float dt = (measurement_pack.timestamp_ - previous_timestamp_) / 1000000.0;
     previous_timestamp_ = measurement_pack.timestamp_;
 
     float dt_2 = dt * dt;

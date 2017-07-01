@@ -23,16 +23,6 @@ KalmanFilter::~KalmanFilter() {}
 //// I_ = MatrixXd::Identity(2, 2);
 //}
 
-/**
-* normalize the PI to -Pi and PI
-* */
-double normalizePi(double x) {
-    x = fmod(x + M_PI, 2*M_PI);
-    if (x < 0)
-    x += 2*M_PI;
-    return x - M_PI;
-}
-
 void KalmanFilter::Predict() {
     /**
     * predict the state
@@ -68,17 +58,13 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
     /**
     * update the state by using Extended Kalman Filter equations
     */
-
-//    VectorXd y = z - H_ * x_;          // 3x1
-
     double rho = sqrt(x_(0)*x_(0) + x_(1)*x_(1));
-    // double theta = atan(x_(1) / x_(0));
-    float theta = atan2(x_(1), x_(0));  // withuot this the prediction shooting out
+    float theta = atan2(x_(1), x_(0));  
     double rho_dot = (x_(0)*x_(2) + x_(1)*x_(3)) / rho;
-    VectorXd h = VectorXd(3); // h(x_)
+    VectorXd h = VectorXd(3); 
     h << rho, theta, rho_dot;
     VectorXd y = z - h;
-    y[1] = atan2(sin(y[1]), cos(y[1]));  //without this, the prediction shooting out
+    y[1] = atan2(sin(y[1]), cos(y[1]));  
     MatrixXd Ht = H_.transpose();      // 4x3
     MatrixXd S = H_ * P_ * Ht + R_;    //(3x4)*(4x4)*(4x3)+(3x3)=(3x3)
     MatrixXd K = P_ * Ht * S.inverse();//(4x4)*(4x3)*(3x3)=(4x3)
