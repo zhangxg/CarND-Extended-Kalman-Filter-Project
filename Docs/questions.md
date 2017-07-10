@@ -87,3 +87,26 @@ while not doing so, get the result of below:
 ![calculate delta result1](./img/cal_delta_1.png)
 
 
+### the rubric requires RMSE: <=[.11, .11, 0.52, 0.52]
+fix the bug:
+```
+} else if (measurement_pack.sensor_type_ == MeasurementPackage::LASER) {
+            /**
+            Initialize state.
+            */
+            // ekf_.x_ << measurement_pack.raw_measurements_[0],
+            // measurement_pack.raw_measurements_[0], 0, 0;
+            ekf_.x_ << measurement_pack.raw_measurements_[0],
+                       measurement_pack.raw_measurements_[1], 0, 0;
+        }
+```
+
+should be `measurement_pack.raw_measurements_[1]`, 
+mine is: 
+[0.0950, 0.0857, 0.4167, 0.4228]   # bug
+[0.0973, 0.0855, 0.4513, 0.4399]   # fix 
+
+with the changing, the result seems has not big change. it indicates that the initial value to the whole kalman filter process has limited influence. 
+
+
+
