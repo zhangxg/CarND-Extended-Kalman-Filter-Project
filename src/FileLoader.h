@@ -19,24 +19,24 @@ using std::vector;
 
 class FileLoader {
 public:
-    /**
-     * Constructors
-     * */
+  /**
+   * Constructors
+   * */
 //    FileLoader(string & filePath);
-    FileLoader(const string & filePath);
+  FileLoader(const string &filePath);
 
-    /**
-     * Destructor
-     * */
-    virtual ~FileLoader();
+  /**
+   * Destructor
+   * */
+  virtual ~FileLoader();
 
-    /**
-     * the loaded data
-     * */
-    vector<MeasurementPackage> loadData();
+  /**
+   * the loaded data
+   * */
+  vector<MeasurementPackage> loadData();
 
 private:
-    string filePath_;
+  string filePath_;
 };
 
 #endif //EXTENDEDKF_DATA_LOADING_H

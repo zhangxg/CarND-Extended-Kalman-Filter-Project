@@ -12,11 +12,11 @@ FileLoader::FileLoader(const string &filePath) {
  * */
 //FileLoader::FileLoader(string &filePath) {
 
-    filePath_ = filePath;
-    /*
-     * if the parameter is added a `const`, then below statement is wrong,
-     * is there a mechanism like java's `self`
-     * */
+  filePath_ = filePath;
+  /*
+   * if the parameter is added a `const`, then below statement is wrong,
+   * is there a mechanism like java's `self`
+   * */
 //    filePath = filePath;
 }
 
@@ -24,73 +24,73 @@ FileLoader::~FileLoader() {
 
 }
 
-void readGroundTruth(istringstream& iss, MeasurementPackage& meas_package){
-    // read ground truth value
-    float x_gt;
-    float y_gt;
-    float vx_gt;
-    float vy_gt;
-    iss >> x_gt;
-    iss >> y_gt;
-    iss >> vx_gt;
-    iss >> vy_gt;
-    meas_package.ground_truth_ = VectorXd(4);
-    meas_package.ground_truth_ << x_gt, y_gt, vx_gt, vy_gt;
+void readGroundTruth(istringstream &iss, MeasurementPackage &meas_package) {
+  // read ground truth value
+  float x_gt;
+  float y_gt;
+  float vx_gt;
+  float vy_gt;
+  iss >> x_gt;
+  iss >> y_gt;
+  iss >> vx_gt;
+  iss >> vy_gt;
+  meas_package.ground_truth_ = VectorXd(4);
+  meas_package.ground_truth_ << x_gt, y_gt, vx_gt, vy_gt;
 }
 
 vector<MeasurementPackage> FileLoader::loadData() {
-    vector<MeasurementPackage> measurement_pack_list;
+  vector<MeasurementPackage> measurement_pack_list;
 
-    // hardcoded input file with laser and radar measurements
-    string in_file_name_ = filePath_;
-    ifstream in_file(in_file_name_.c_str(),std::ifstream::in);
+  // hardcoded input file with laser and radar measurements
+  string in_file_name_ = filePath_;
+  ifstream in_file(in_file_name_.c_str(), std::ifstream::in);
 
-    if (!in_file.is_open()) {
-        cout << "Cannot open input file: " << in_file_name_ << endl;
+  if (!in_file.is_open()) {
+    cout << "Cannot open input file: " << in_file_name_ << endl;
+  }
+
+  string line;
+  while (getline(in_file, line)) {
+
+    MeasurementPackage meas_package;
+
+    istringstream iss(line);
+    string sensor_type;
+    iss >> sensor_type;  //reads first element from the current line
+    long timestamp;
+    if (sensor_type.compare("L") == 0) {  //laser measurement
+      //read measurements
+      meas_package.sensor_type_ = MeasurementPackage::LASER;
+      meas_package.raw_measurements_ = VectorXd(2);
+      float x;
+      float y;
+      iss >> x;
+      iss >> y;
+      meas_package.raw_measurements_ << x, y;
+      iss >> timestamp;
+      meas_package.timestamp_ = timestamp;
+
+      readGroundTruth(iss, meas_package);
+
+      measurement_pack_list.push_back(meas_package);
+
+    } else if (sensor_type.compare("R") == 0) {
+      meas_package.sensor_type_ = MeasurementPackage::RADAR;
+      meas_package.raw_measurements_ = VectorXd(3);
+      float ro;
+      float theta;
+      float ro_dot;
+      iss >> ro;
+      iss >> theta;
+      iss >> ro_dot;
+      meas_package.raw_measurements_ << ro, theta, ro_dot;
+      iss >> timestamp;
+      meas_package.timestamp_ = timestamp;
+      readGroundTruth(iss, meas_package);
+      measurement_pack_list.push_back(meas_package);
     }
 
-    string line;
-    while(getline(in_file, line)){
-
-        MeasurementPackage meas_package;
-
-        istringstream iss(line);
-        string sensor_type;
-        iss >> sensor_type;	//reads first element from the current line
-        long timestamp;
-        if(sensor_type.compare("L") == 0){	//laser measurement
-            //read measurements
-            meas_package.sensor_type_ = MeasurementPackage::LASER;
-            meas_package.raw_measurements_ = VectorXd(2);
-            float x;
-            float y;
-            iss >> x;
-            iss >> y;
-            meas_package.raw_measurements_ << x,y;
-            iss >> timestamp;
-            meas_package.timestamp_ = timestamp;
-
-            readGroundTruth(iss, meas_package);
-
-            measurement_pack_list.push_back(meas_package);
-
-        }else if(sensor_type.compare("R") == 0){
-            meas_package.sensor_type_ = MeasurementPackage::RADAR;
-            meas_package.raw_measurements_ = VectorXd(3);
-            float ro;
-            float theta;
-            float ro_dot;
-            iss >> ro;
-            iss >> theta;
-            iss >> ro_dot;
-            meas_package.raw_measurements_ << ro,theta, ro_dot;
-            iss >> timestamp;
-            meas_package.timestamp_ = timestamp;
-            readGroundTruth(iss, meas_package);
-            measurement_pack_list.push_back(meas_package);
-        }
-
-        // WORKS.
+    // WORKS.
 //        // read ground truth value
 //        float x_gt;
 //        float y_gt;
@@ -102,13 +102,13 @@ vector<MeasurementPackage> FileLoader::loadData() {
 //        iss >> vy_gt;
 //        meas_package.ground_truth_ << x_gt, y_gt, vx_gt, vy_gt;
 //        measurement_pack_list.push_back(meas_package);
-    }
+  }
 
-    if(in_file.is_open()){
-        in_file.close();
-    }
+  if (in_file.is_open()) {
+    in_file.close();
+  }
 
-    return measurement_pack_list;
+  return measurement_pack_list;
 }
 
 //int main() {
