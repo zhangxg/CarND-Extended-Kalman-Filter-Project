@@ -1,9 +1,9 @@
-#include <uWS/uWS.h>
-#include <iostream>
-#include "json.hpp"
-#include <math.h>
 #include "FusionEKF.h"
+#include "json.hpp"
 #include "tools.h"
+#include <iostream>
+#include <math.h>
+#include <uWS/uWS.h>
 
 using namespace std;
 
@@ -36,8 +36,9 @@ int main() {
   vector<VectorXd> estimations;
   vector<VectorXd> ground_truth;
 
-  h.onMessage([&fusionEKF, &tools, &estimations, &ground_truth](uWS::WebSocket<uWS::SERVER> ws, char *data,
-                                                                size_t length, uWS::OpCode opCode) {
+  h.onMessage([&fusionEKF, &tools, &estimations,
+               &ground_truth](uWS::WebSocket<uWS::SERVER> ws, char *data,
+                              size_t length, uWS::OpCode opCode) {
     // "42" at the start of the message means there's a websocket message event.
     // The 4 signifies a websocket message
     // The 2 signifies a websocket event
@@ -102,10 +103,11 @@ int main() {
           gt_values(3) = vy_gt;
           ground_truth.push_back(gt_values);
 
-          //Call ProcessMeasurment(meas_package) for Kalman filter
+          // Call ProcessMeasurment(meas_package) for Kalman filter
           fusionEKF.ProcessMeasurement(meas_package);
 
-          //Push the current estimated x,y positon from the Kalman filter's state vector
+          // Push the current estimated x,y positon from the Kalman filter's
+          // state vector
 
           VectorXd estimate(4);
 
@@ -133,7 +135,6 @@ int main() {
           auto msg = "42[\"estimate_marker\"," + msgJson.dump() + "]";
           // std::cout << msg << std::endl;
           ws.send(msg.data(), msg.length(), uWS::OpCode::TEXT);
-
         }
       } else {
 
@@ -141,12 +142,12 @@ int main() {
         ws.send(msg.data(), msg.length(), uWS::OpCode::TEXT);
       }
     }
-
   });
 
-  // We don't need this since we're not using HTTP but if it's removed the program
-  // doesn't compile :-(
-  h.onHttpRequest([](uWS::HttpResponse *res, uWS::HttpRequest req, char *data, size_t, size_t) {
+  // We don't need this since we're not using HTTP but if it's removed the
+  // program doesn't compile :-(
+  h.onHttpRequest([](uWS::HttpResponse *res, uWS::HttpRequest req, char *data,
+                     size_t, size_t) {
     const std::string s = "<h1>Hello world!</h1>";
     if (req.getUrl().valueLength == 1) {
       res->end(s.data(), s.length());
@@ -160,7 +161,8 @@ int main() {
     std::cout << "Connected!!!" << std::endl;
   });
 
-  h.onDisconnection([&h](uWS::WebSocket<uWS::SERVER> ws, int code, char *message, size_t length) {
+  h.onDisconnection([&h](uWS::WebSocket<uWS::SERVER> ws, int code,
+                         char *message, size_t length) {
     ws.close();
     std::cout << "Disconnected" << std::endl;
   });

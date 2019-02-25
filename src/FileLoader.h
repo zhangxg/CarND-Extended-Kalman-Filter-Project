@@ -1,16 +1,13 @@
-//
-// Created by zhangxg on 17/6/17.
-//
 
 #ifndef EXTENDEDKF_DATA_LOADING_H
 #define EXTENDEDKF_DATA_LOADING_H
 
+#include "Eigen/Dense"
+#include "measurement_package.h"
 #include <fstream>
 #include <iostream>
 #include <sstream>
 #include <vector>
-#include "Eigen/Dense"
-#include "measurement_package.h"
 
 using namespace std;
 using Eigen::MatrixXd;
@@ -22,7 +19,7 @@ public:
   /**
    * Constructors
    * */
-//    FileLoader(string & filePath);
+  //    FileLoader(string & filePath);
   FileLoader(const string &filePath);
 
   /**
@@ -39,4 +36,4 @@ private:
   string filePath_;
 };
 
-#endif //EXTENDEDKF_DATA_LOADING_H
+#endif // EXTENDEDKF_DATA_LOADING_H

@@ -8,17 +8,17 @@ set(CXX_FLAGS "-Wall")
 set(CMAKE_CXX_FLAGS, "${CXX_FLAGS}")
 
 set(sources
-        # src/main.cpp
-        # src/FileLoader.cpp
-        # src/test_boot.cpp
-        src/tools.cpp
-        src/FusionEKF.cpp
-        src/kalman_filter.cpp
-        src/tools.h
-        src/FusionEKF.h
-        src/kalman_filter.h
-        src/experiments/01_file_reading/file_reading.cpp
-        )
+    # src/main.cpp
+    # src/FileLoader.cpp
+    # src/test_boot.cpp
+    src/tools.cpp
+    src/FusionEKF.cpp
+    src/kalman_filter.cpp
+    src/tools.h
+    src/FusionEKF.h
+    src/kalman_filter.h
+    src/experiments/01_file_reading/file_reading.cpp
+    )
 
 
 if (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
